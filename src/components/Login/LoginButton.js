@@ -1,10 +1,17 @@
 import React from "react";
 import GoogleImage from "../../assets/google.svg";
 import { styled } from "styled-components";
-const LoginButton = () => {
+import { connect } from "react-redux";
+import { signInAPi } from "../../redux/actions";
+import { useNavigate } from "react-router-dom";
+const LoginButton = (props) => {
+  const navigate = useNavigate();
+  {
+    props.userState && navigate("/home");
+  }
   return (
     <Form>
-      <Google>
+      <Google onClick={() => props.signIn()}>
         <img src={GoogleImage} alt="Google Image" />
         Sign in with Google
       </Google>
@@ -41,4 +48,20 @@ const Google = styled.button`
   }
 `;
 
-export default LoginButton;
+//! Convert state to props
+
+const mapStateToProps = (state) => {
+  return {
+    userState: state.userState.user,
+  };
+};
+
+//! convert dispatch to props
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signIn: () => dispatch(signInAPi()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginButton);
