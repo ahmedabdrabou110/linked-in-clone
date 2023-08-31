@@ -2,18 +2,26 @@ import React from "react";
 import { styled } from "styled-components";
 import UserImage from "../../assets/user.svg";
 import DownArrow from "../../assets/down-icon.svg";
+import { connect, useDispatch } from "react-redux";
+import { signInAPi, signOutApi } from "../../redux/actions";
 
-const UserNavList = () => {
+const UserNavList = (props) => {
+  const dispatch = useDispatch();
   return (
     <User>
       <a>
-        <img src={UserImage} alt="User Image" />
+        {props?.user && props?.user?.photoURL ? (
+          <img src={props.user.photoURL} />
+        ) : (
+          <img src={UserImage} alt="User Image" />
+        )}
+
         <span>
           Me
           <img src={DownArrow} alt="down arrow image" />
         </span>
       </a>
-      <SignOut>
+      <SignOut onClick={() => dispatch(signOutApi())}>
         <a> Sign Out </a>
       </SignOut>
     </User>
@@ -53,7 +61,7 @@ const SignOut = styled.li`
     }
   }
   position: absolute;
-  top: 60px;
+  top: 45px;
   background: white;
   border-radius: 0 0 5px 5px;
   width: 100px;
@@ -130,4 +138,10 @@ const User = styled.li`
   }
 `;
 
-export default UserNavList;
+const mapStateToProps = (state) => {
+  return {
+    user: state.userState.user,
+  };
+};
+
+export default connect(mapStateToProps)(UserNavList);
