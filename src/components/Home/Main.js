@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import UserPhoto from "../../assets/user.svg";
 import { styled } from "styled-components";
 import PostModal from "./PostModal";
@@ -11,14 +11,22 @@ import LikeIcon from "../../assets/like-icon.svg";
 import CommentIcon from "../../assets/comment-icon.svg";
 import ShareIcon from "../../assets/share-icon.svg";
 import SendIcon from "../../assets/send-icon.svg";
+import Loader from "../../assets/loader.svg";
+import ReactPlayer from "react-player";
+import { getArticleAPI } from "../../redux/actions";
 const Main = () => {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.userState.user);
   const articles = useSelector((state) => state.articleState?.article);
-  console.log(articles);
+  const loading = useSelector((state) => state.articleState?.loading);
+
   const [showModal, setShowModal] = useState(false);
   const handleClick = () => {
     setShowModal(!showModal);
   };
+  useEffect(() => {
+    dispatch(getArticleAPI());
+  }, []);
   return (
     <Container>
       <ShareBox>
@@ -64,18 +72,18 @@ const Main = () => {
         </p>
       ) : (
         <Content>
-          {props.loading && <img src="images/loader.svg" alt="" />}
-          {props.articles.length > 0 &&
+          {loading && <img src={Loader} alt="" />}
+          {articles.length > 0 &&
             articles.map((article, index) => (
               <Article key={index}>
                 <SharedActor>
                   <a>
-                    <img src={article.actor.image} />
+                    <img src={article.actors.image} />
                     <div>
-                      <span>{article.actor.title}</span>
-                      <span>{article.actor.description}</span>
+                      <span>{article.actors.title}</span>
+                      <span>{article.actors.description}</span>
                       <span>
-                        {article.actor.date.toDate().toLocaleDateString()}
+                        {article.actors.date.toDate().toLocaleDateString()}
                       </span>
                     </div>
                   </a>

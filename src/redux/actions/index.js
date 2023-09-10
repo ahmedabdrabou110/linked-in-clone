@@ -1,9 +1,15 @@
 import { signInWithPopup } from "firebase/auth";
 import { auth, fireStore, provider, storage } from "../../firebase";
 
-import { setLoading, setUser } from "./actions";
+import { getArticles, setLoading, setUser } from "./actions";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { addDoc, collection } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 export function signInAPi() {
   return (dispatch) => {
     signInWithPopup(auth, provider)
@@ -65,9 +71,9 @@ export function postArticleAPI(payload) {
               shareImg: url,
             });
           });
+          dispatch(setLoading(false));
         }
       );
-      dispatch(setLoading(false));
     } else if (payload.video) {
       const collectionRef = collection(fireStore, "articles");
       addDoc(collectionRef, {
@@ -99,5 +105,17 @@ export function postArticleAPI(payload) {
       });
       dispatch(setLoading(false));
     }
+  };
+}
+
+export function getArticleAPI() {
+  return (dispatch) => {
+    let payload;
+    const collectionRef = collection(fireStore, "articles");
+    const orderedRef = query(collectionRef, orderBy("actors.date", "desc"));
+    onSnapshot(orderedRef, (snapshot) => {
+      payload = snapshot.docs.map((doc) => doc.data());
+      dispatch(getArticles(payload));
+    });
   };
 }
