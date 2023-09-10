@@ -1,18 +1,68 @@
 import React, { useState } from "react";
 import CloseIcon from "../../assets/close-icon.svg";
 import UserPhoto from "../../assets/user.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ReactPlayer from "react-player";
 import ImageShare from "../../assets/share-image.svg";
 import VideoShare from "../../assets/share-video.svg";
 import CommentShare from "../../assets/share-comment.svg";
+import { Timestamp } from "firebase/firestore";
 import { styled } from "styled-components";
+import { postArticleAPI } from "../../redux/actions";
 const PostModal = ({ showModal, handleClick }) => {
   const user = useSelector((state) => state.userState.user);
+  const disptch = useDispatch();
   const [editorText, setEditorText] = useState("");
   const [assetArea, setAssetArea] = useState("");
   const [shareImage, setShareImage] = useState("");
   const [videoLink, setVideoLink] = useState("");
+
+  //! This is  function that switch between image or video links
+  const switchAssetsArea = (area) => {
+    setAssetArea(area);
+    setShareImage("");
+    setVideoLink("");
+  };
+
+  //! This is a function that reset all
+  const reset = (e) => {
+    setEditorText("");
+    setShareImage("");
+    setAssetArea("");
+    setVideoLink("");
+    handleClick(e);
+  };
+
+  //! This is a function that make that image uploaded is only uploaded
+  const handleChange = (e) => {
+    const image = e.target.files[0];
+    if (image === "" || image === undefined) {
+      alert(`not an image , the file is a ${typeof image}`);
+      return;
+    }
+    setShareImage(image);
+  };
+
+  //! This is a function that share a post
+  const sharePost = (payload) => {
+    disptch(postArticleAPI(payload));
+  };
+
+  //! This is a function that submit of upload
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (e.target !== e.currentTarget) return;
+    const payload = {
+      image: shareImage,
+      video: videoLink,
+      user,
+      description: editorText,
+      timestamp: Timestamp.now(),
+    };
+    sharePost(payload);
+    reset(e);
+  };
+
   return (
     <>
       {showModal && (
@@ -20,7 +70,7 @@ const PostModal = ({ showModal, handleClick }) => {
           <Content>
             <Header>
               <h2>Create a post</h2>
-              <button>
+              <button onClick={(e) => reset(e)}>
                 <img src={CloseIcon} alt="Close icon" />
               </button>
             </Header>
@@ -47,6 +97,7 @@ const PostModal = ({ showModal, handleClick }) => {
                       name="image"
                       id="file"
                       style={{ display: "none" }}
+                      onChange={handleChange}
                     />
                     <p>
                       <label
@@ -60,7 +111,9 @@ const PostModal = ({ showModal, handleClick }) => {
                         Select an image to share
                       </label>
                     </p>
-                    {shareImage && <img src="" alt="image" />}
+                    {shareImage && (
+                      <img src={URL.createObjectURL(shareImage)} alt="image" />
+                    )}
                   </UploadImage>
                 ) : (
                   assetArea === "media" && (
@@ -82,10 +135,10 @@ const PostModal = ({ showModal, handleClick }) => {
             </ShareContent>
             <ShareCreation>
               <AttachAssets>
-                <AssetButton>
+                <AssetButton onClick={() => switchAssetsArea("image")}>
                   <img src={ImageShare} alt="image share " />
                 </AssetButton>
-                <AssetButton>
+                <AssetButton onClick={() => switchAssetsArea("media")}>
                   <img src={VideoShare} alt="video share " />
                 </AssetButton>
               </AttachAssets>
@@ -95,7 +148,10 @@ const PostModal = ({ showModal, handleClick }) => {
                   Anyone
                 </AssetButton>
               </ShareComment>
-              <PostButton disabled={!editorText ? true : false}>
+              <PostButton
+                disabled={!editorText ? true : false}
+                onClick={(e) => handleSubmit(e)}
+              >
                 post
               </PostButton>
             </ShareCreation>
