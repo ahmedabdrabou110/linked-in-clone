@@ -1,70 +1,68 @@
-# Getting Started with Create React App
+# Linked in Clone version 1 
+#### This Application is same as linkedin , you can sign in with gmail , post a photo , a video and post a text This is version 1 only .
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## You can see preview of project with [linked in clone](https://linked-in-clone-d0e88.web.app/)
 
-## Available Scripts
+### In this project I use some libraray in addition to React.js
+# 1. firebase
+This enable to save the posts , authentication and post photo , video with link and text.
+```
+npm install firebase
+npm install -g firebase tools
+```
 
-In the project directory, you can run:
+We can you it for hosting the project to live
+```
+firebase init
+firebase deploy
+```
+# 2. react-player
+#### ReactPlayer will remain open source, but with a higher rate of fixes and releases over time. Thanks to everyone in the community for your ongoing support.
 
-### `npm start`
+```
+npm install react-player
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# 3. react-redux
+#### React Redux is the official React UI bindings layer for Redux. It lets your React components read data from a Redux store, and dispatch actions to the store to update state.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```
+npm install react-redux
+```
 
-### `npm test`
+# 4. redux 
+#### Redux is a predictable state container for JavaScript apps.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+###### It helps you write applications that behave consistently, run in different environments (client, server, and native), and are easy to test. On top of that, it provides a great developer experience, such as live code editing combined with a time traveling debugger.
 
-### `npm run build`
+You can use Redux together with React, or with any other view library. It is tiny (2kB, including dependencies), but has a large ecosystem of addons available.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+``` 
+npm install redux 
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# 5. redux-thunk 
+#### A thunk function may contain any arbitrary logic, sync or async, and can call dispatch or getState at any time.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+``` 
+npm install redux-thunk
+```
 
-### `npm run eject`
+##### In the same way that Redux code normally uses action creators to generate action objects for dispatching instead of writing action objects by hand, we normally use thunk action creators to generate the thunk functions that are dispatched. A thunk action creator is a function that may have some arguments, and returns a new thunk function. The thunk typically closes over any arguments passed to the action creator, so they can be used in the logic:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+const thunkFunction = (dispatch, getState) => {
+  // logic here that can dispatch actions or read state
+}
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+store.dispatch(thunkFunction)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+``` 
+# 6. styled-components 
+#### Utilising tagged template literals (a recent addition to JavaScript) and the power of CSS, styled-components allows you to write actual CSS code to style your components. It also removes the mapping between components and styles – using components as a low-level styling construct could not be easier!
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+``` 
+npm install styled-components
+``` 
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# This is Version 1 , I will update this is project always
